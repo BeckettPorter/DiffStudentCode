@@ -20,48 +20,34 @@ public class PlagiarismChecker
 
         // TODO Complete this function to return the length of the longest shared substring.
 
-        int[][] lengthsAr = new int[doc1.length()][doc2.length()];
+
 
         // Given every char, go through rest of strings and find possible other combos
 
 
-        for (int x = 0; x < doc1.length(); x++)
-        {
-            for (int y = 0; y < doc2.length(); y++)
-            {
-                int char1 = doc1.charAt(x);
-                int char2 = doc2.charAt(y);
 
-                if (char1 == char2)
-                {
-                    if (isArLocInBounds(x - 1, y - 1, lengthsAr))
-                    {
-                        lengthsAr[x][y] = lengthsAr[x - 1][y - 1] + 1;
-                    }
-                }
-                else
-                {
-                    if (isArLocInBounds(x - 1, y - 1, lengthsAr))
-                    {
-                        lengthsAr[x][y] = lengthsAr[x - 1][y - 1];
-                    }
-                }
-            }
-        }
 
-        return lengthsAr[lengthsAr.length - 1][lengthsAr[0].length - 1];
+
+        return LCS(doc1, 0, doc2, 0);
     }
 
-    private static boolean isArLocInBounds(int x, int y, int[][] ar)
+    private static int LCS(String word1, int index1, String word2, int index2)
     {
-        if (x < 0 || x >= ar.length)
+        if (index1 == word1.length() - 1)
         {
-            return false;
+            return 0;
         }
-        if (y < 0 || y >= ar[0].length)
+        if (index2 == word2.length() - 1)
         {
-            return false;
+            return 0;
         }
-        return true;
+
+
+        if (word1.charAt(index1) == word2.charAt(index2))
+        {
+            return 1 + Math.max(LCS(word1, index1 + 1, word2, index2), LCS(word1, index1, word2, index2 + 1));
+        }
+        return Math.max(LCS(word1, index1 + 1, word2, index2), LCS(word1, index1, word2, index2 + 1));
+
     }
 }
