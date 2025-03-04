@@ -16,38 +16,33 @@ public class PlagiarismChecker
      * @param doc2 the second
      * @return The length of the longest shared substring.
      */
-    public static int longestSharedSubstring(String doc1, String doc2) {
+    public static int longestSharedSubstring(String doc1, String doc2)
+    {
 
         // TODO Complete this function to return the length of the longest shared substring.
 
+        int string1Length = doc1.length();
+        int string2Length = doc2.length();
+        int[][] stringTable = new int[string1Length + 1][string2Length + 1];
 
-
-        // Given every char, go through rest of strings and find possible other combos
-
-
-
-
-
-        return LCS(doc1, 0, doc2, 0);
-    }
-
-    private static int LCS(String word1, int index1, String word2, int index2)
-    {
-        if (index1 == word1.length() - 1)
+        for (int i = 1; i <= string1Length; i++)
         {
-            return 0;
-        }
-        if (index2 == word2.length() - 1)
-        {
-            return 0;
+            for (int j = 1; j <= string2Length; j++)
+            {
+                char currentChar1 = doc1.charAt(i - 1);
+                char currentChar2 = doc2.charAt(j - 1);
+
+                if (currentChar1 == currentChar2)
+                {
+                    stringTable[i][j] = 1 + stringTable[i - 1][j - 1];
+                }
+                else
+                {
+                    stringTable[i][j] = Math.max(stringTable[i - 1][j], stringTable[i][j - 1]);
+                }
+            }
         }
 
-
-        if (word1.charAt(index1) == word2.charAt(index2))
-        {
-            return 1 + Math.max(LCS(word1, index1 + 1, word2, index2), LCS(word1, index1, word2, index2 + 1));
-        }
-        return Math.max(LCS(word1, index1 + 1, word2, index2), LCS(word1, index1, word2, index2 + 1));
-
+        return stringTable[string1Length][string2Length];
     }
 }
